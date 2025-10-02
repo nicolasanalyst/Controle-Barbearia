@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Gestão</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Script para carregar o tema (dark/light) -->
+    <script>
+      if (
+        localStorage.getItem("theme") === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-gray-100 dark:bg-black">
+    <div id="app-wrapper">
+      <div
+        id="screen-login"
+        class="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4 relative"
+      >
+        <div class="absolute top-5 right-5">
+          <button
+            id="theme-toggle-button"
+            class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+          >
+            <svg
+              class="w-6 h-6 block dark:hidden"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              ></path>
+            </svg>
+            <svg
+              class="w-6 h-6 hidden dark:block"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md max-w-sm w-full text-center mx-auto">
+  <!-- Ícone -->
+  <div class="flex justify-center mb-4">
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         class="w-10 h-10 text-teal-600"
+         fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    </svg>
+  </div>
+  <!-- Título -->
+  <h2 class="text-2xl font-bold text-teal-700 dark:text-teal-400 mb-2">Bem-vindo(a)!</h2>
+  <!-- Subtítulo -->
+  <p class="text-gray-500 dark:text-gray-400 mb-6">Acesse o painel de gestão.</p>
+  <!-- Botão -->
+  <button
+    id="login-button"
+    class="w-full bg-teal-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-teal-700"
+  >
+    Acessar
+  </button>
+</div>
+
+        </div>
+      </div>
+
+      <div id="screen-app" class="hidden">
+        <aside
+          class="w-64 bg-white dark:bg-gray-800 shadow-md hidden md:flex flex-col"
+        >
+          <nav class="flex-1 px-4 space-y-2 py-4">
+            <button
+              data-page="page-dashboard"
+              class="nav-button w-full flex items-center space-x-3 p-3 rounded-lg text-white bg-teal-600 dark:bg-teal-500"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                ></path></svg
+              ><span class="font-semibold">Início</span>
+            </button>
+            <button
+              data-page="page-agenda"
+              class="nav-button w-full flex items-center space-x-3 p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path></svg
+              ><span class="font-semibold">Agenda</span>
+            </button>
+            <button
+              data-page="page-clientes"
+              class="nav-button w-full flex items-center space-x-3 p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197m0 0A5.975 5.975 0 0112 13a5.975 5.975 0 013 1.803M15 21a9 9 0 00-9-5.197"
+                ></path></svg
+              ><span class="font-semibold">Clientes</span>
+            </button>
+            <button
+              data-page="page-relatorios"
+              class="nav-button w-full flex items-center space-x-3 p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path></svg
+              ><span class="font-semibold">Relatórios</span>
+            </button>
+          </nav>
+          <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+            <button
+              class="logout-button w-full flex items-center space-x-3 p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                ></path>
+              </svg>
+              <span class="font-semibold">Sair</span>
+            </button>
+          </div>
+        </aside>
+        <div class="flex-1 flex flex-col">
+          <main id="main-content" class="flex-1 p-6 pb-20 md:pb-6"></main>
+          <nav
+            class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around shadow-lg md:hidden"
+          >
+            <button
+              data-page="page-dashboard"
+              class="nav-button flex-1 flex flex-col items-center p-3 text-teal-600 dark:text-teal-400"
+            >
+              <svg
+                class="w-6 h-6 mb-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                ></path></svg
+              ><span class="text-xs font-medium">Início</span>
+            </button>
+            <button
+              data-page="page-agenda"
+              class="nav-button flex-1 flex flex-col items-center p-3 text-gray-500 dark:text-gray-400"
+            >
+              <svg
+                class="w-6 h-6 mb-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path></svg
+              ><span class="text-xs font-medium">Agenda</span>
+            </button>
+            <button
+              data-page="page-clientes"
+              class="nav-button flex-1 flex flex-col items-center p-3 text-gray-500 dark:text-gray-400"
+            >
+              <svg
+                class="w-6 h-6 mb-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197m0 0A5.975 5.975 0 0112 13a5.975 5.975 0 013 1.803M15 21a9 9 0 00-9-5.197"
+                ></path></svg
+              ><span class="text-xs font-medium">Clientes</span>
+            </button>
+            <button
+              data-page="page-relatorios"
+              class="nav-button flex-1 flex flex-col items-center p-3 text-gray-500 dark:text-gray-400"
+            >
+              <svg
+                class="w-6 h-6 mb-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path></svg
+              ><span class="text-xs font-medium">Relatórios</span>
+            </button>
+            <button
+              class="logout-button flex-1 flex flex-col items-center p-3 text-gray-500 dark:text-gray-400"
+            >
+              <svg
+                class="w-6 h-6 mb-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                ></path>
+              </svg>
+              <span class="text-xs font-medium">Sair</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <template id="template-page-dashboard">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">
+          Bom dia, Barbearia!
+        </h1>
+        <p class="text-gray-500 dark:text-gray-400 mb-6">
+          Aqui está o resumo de hoje.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+            <h3 class="font-semibold text-gray-600 dark:text-gray-300 text-sm">
+              Agendamentos de Hoje
+            </h3>
+            <p
+              id="dashboard-appointments-today"
+              class="text-3xl font-bold text-gray-900 dark:text-gray-100"
+            >
+              0
+            </p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+            <h3 class="font-semibold text-gray-600 dark:text-gray-300 text-sm">
+              Faturamento Previsto
+            </h3>
+            <p
+              id="dashboard-revenue-today"
+              class="text-3xl font-bold text-gray-900 dark:text-gray-100"
+            >
+              R$ 0,00
+            </p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+            <h3 class="font-semibold text-gray-600 dark:text-gray-300 text-sm">
+              Total de Clientes
+            </h3>
+            <p
+              id="dashboard-total-clients"
+              class="text-3xl font-bold text-gray-900 dark:text-gray-100"
+            >
+              0
+            </p>
+          </div>
+        </div>
+        <div
+          id="dashboard-next-client"
+          class="mt-6 bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-teal-500 dark:border-teal-400"
+        ></div>
+      </div>
+    </template>
+
+    <template id="template-page-agenda">
+      <div>
+        <div
+          class="flex flex-col md:flex-row justify-between md:items-center mb-4"
+        >
+          <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">
+            Agenda
+          </h1>
+          <div class="flex items-center space-x-2 mt-4 md:mt-0">
+            <input
+              type="date"
+              id="agenda-date-picker"
+              class="border border-gray-300 dark:border-gray-600 rounded-md p-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+            />
+           
+          </div>
+        </div>
+        <div
+          id="agenda-content-container"
+          class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow min-h-[300px]"
+        ></div>
+      </div>
+    </template>
+
+    <template id="template-page-clientes">
+      <div class="p-4 md:p-0">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+          Clientes
+        </h1>
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden"
+        >
+          <ul
+            id="client-list-container"
+            class="divide-y divide-gray-200 dark:divide-gray-700"
+          ></ul>
+        </div>
+      </div>
+    </template>
+
+    <template id="template-page-relatorios">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          Relatórios
+        </h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+            <h3 class="font-semibold text-gray-600 dark:text-gray-300 text-sm">
+              Relatório Diário (Hoje)
+            </h3>
+            <p
+              id="report-daily-revenue"
+              class="text-2xl font-bold text-gray-900 dark:text-gray-100"
+            >
+              R$ 0,00
+            </p>
+            <p
+              id="report-daily-count"
+              class="text-sm text-gray-500 dark:text-gray-400"
+            >
+              0 agendamentos
+            </p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+            <h3 class="font-semibold text-gray-600 dark:text-gray-300 text-sm">
+              Relatório Semanal (Últimos 7 dias)
+            </h3>
+            <p
+              id="report-weekly-revenue"
+              class="text-2xl font-bold text-gray-900 dark:text-gray-100"
+            >
+              R$ 0,00
+            </p>
+            <p
+              id="report-weekly-count"
+              class="text-sm text-gray-500 dark:text-gray-400"
+            >
+              0 agendamentos
+            </p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+            <h3 class="font-semibold text-gray-600 dark:text-gray-300 text-sm">
+              Relatório Mensal (Mês Atual)
+            </h3>
+            <p
+              id="report-monthly-revenue"
+              class="text-2xl font-bold text-gray-900 dark:text-gray-100"
+            >
+              R$ 0,00
+            </p>
+            <p
+              id="report-monthly-count"
+              class="text-sm text-gray-500 dark:text-gray-400"
+            >
+              0 agendamentos
+            </p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+          <h3 class="font-bold text-gray-800 dark:text-gray-200 mb-4">
+            Faturamento nos Últimos 7 Dias
+          </h3>
+          <canvas id="revenue-chart"></canvas>
+        </div>
+      </div>
+    </template>
+
+    <div
+      id="agendamento-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-md"
+      >
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">
+            Novo Agendamento
+          </h2>
+        </div>
+        <form id="agendamento-form" class="p-6 space-y-4">
+          <div>
+            <label class="text-sm font-medium text-gray-600 dark:text-gray-300"
+              >Serviço</label
+            >
+            <select
+              name="service"
+              required
+              class="w-full mt-1 border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+            >
+              <option value="" data-price="0">Selecione um serviço</option>
+              <option value="Corte de Cabelo" data-price="35.00">
+                Corte de Cabelo - R$ 35,00
+              </option>
+              <option value="Barba" data-price="25.00">Barba - R$ 25,00</option>
+              <option value="Corte e Barba" data-price="55.00">
+                Corte e Barba - R$ 55,00
+              </option>
+              <option value="Pezinho" data-price="10.00">
+                Pezinho - R$ 10,00
+              </option>
+            </select>
+          </div>
+          <input type="hidden" name="price" />
+          <div>
+            <label class="text-sm font-medium text-gray-600 dark:text-gray-300"
+              >Nome do Cliente</label
+            >
+            <input
+              type="text"
+              name="clientName"
+              required
+              class="w-full mt-1 border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+            />
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-600 dark:text-gray-300"
+              >Telefone do Cliente</label
+            >
+            <input
+              type="tel"
+              name="phone"
+              required
+              class="w-full mt-1 border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                class="text-sm font-medium text-gray-600 dark:text-gray-300"
+                >Data</label
+              >
+              <input
+                type="date"
+                name="date"
+                required
+                class="w-full mt-1 border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+              />
+            </div>
+            <div>
+              <label
+                class="text-sm font-medium text-gray-600 dark:text-gray-300"
+                >Hora</label
+              >
+              <input
+                type="time"
+                name="time"
+                required
+                class="w-full mt-1 border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+              />
+            </div>
+          </div>
+          <div class="flex justify-end space-x-3 pt-4">
+            <button
+              type="button"
+              id="close-agendamento-modal-btn"
+              class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded-md"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="bg-teal-600 text-white font-semibold py-2 px-4 rounded-md"
+            >
+              Agendar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

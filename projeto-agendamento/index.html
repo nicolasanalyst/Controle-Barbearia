@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agendamento - Barbearia do Felipe</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    class="bg-gray-200 dark:bg-gray-900 flex justify-center items-center min-h-screen"
+  >
+    <div
+      class="bg-white dark:bg-gray-800 flex flex-col w-full h-screen shadow-none md:h-[75vh] md:max-h-[700px] md:max-w-md md:rounded-xl md:shadow-2xl"
+    >
+      <div
+        class="p-4 border-b dark:border-gray-700 flex items-center space-x-3 flex-shrink-0"
+      >
+        <img
+          class="w-12 h-12 rounded-full"
+          src="Img/avatar.png"
+          alt="Avatar do Barbeiro"
+        />
+        <div>
+          <h1
+            id="business-name-title"
+            class="text-lg font-bold text-gray-800 dark:text-white"
+          >
+            Assistente da Barbearia
+          </h1>
+          <p class="text-sm text-green-500 dark:text-green-400">● Online</p>
+        </div>
+      </div>
+
+      <div id="chat-body" class="flex-1 p-4 space-y-4 overflow-y-auto"></div>
+      <div
+        id="response-area"
+        class="p-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex-shrink-0"
+      ></div>
+    </div>
+
+    <script src="chat.js"></script>
+  </body>
+</html>
