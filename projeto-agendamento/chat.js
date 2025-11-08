@@ -1,19 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ESTADO DA APLICAÇÃO (será preenchido pela API)
+ 
     let appData = {
         business: { name: 'Barbearia do Felipe' },
         services: { 'Corte de Cabelo': 40, 'Barba': 30, 'Cabelo + Barba': 65, 'Sobrancelha': 20, 'Platinado': 150 },
     };
     const selection = { service: null, date: null, time: null, name: '', phone: '', paymentMethod: null };
 
-    // --- Elementos da UI ---
     const chatBody = document.getElementById('chat-body');
     const responseArea = document.getElementById('response-area');
     const businessNameTitle = document.getElementById('business-name-title');
     
     businessNameTitle.textContent = `Assistente da ${appData.business.name}`;
 
-    // --- Funções do Chat ---
     const addMessage = (sender, message, isHtml = false) => {
         const messageDiv = document.createElement('div');
         const contentDiv = document.createElement('div');
@@ -51,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const clearResponseArea = () => { responseArea.innerHTML = ''; };
 
-    // --- Lógica do Fluxo de Conversa ---
     let currentStep = 'start';
 
     const handleConversation = (userResponse = null) => {
@@ -128,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Funções para Mostrar Opções ---
     const showServiceOptions = () => {
         currentStep = 'askDate';
         const optionsContainer = document.createElement('div');
@@ -163,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let bookedTimes = [];
         try {
-            // CORREÇÃO: Usando caminho relativo correto baseado na sua estrutura de pastas
+            
             const response = await fetch(`../projeto-gestao/api.php?acao=getHorarios&data=${date}`);
             const data = await response.json();
             if (data.sucesso) {
@@ -271,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // CORREÇÃO: Usando caminho relativo correto baseado na sua estrutura de pastas
+            
             const response = await fetch('../projeto-gestao/api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -287,7 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Erro do backend:', data.mensagem);
                 addMessage('bot', 'Ops, tivemos um problema ao registrar seu horário. Por favor, tente novamente mais tarde.');
             }
-            // Se o sucesso for true, a mensagem de confirmação já foi exibida na tela.
             
         } catch (error) {
             console.error('Erro de conexão:', error);
