@@ -1,14 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // ESTADO DA APLICAÇÃO
     const appState = {
         clients: [],
         appointments: []
     };
-    // VARIÁVEL PARA O GRÁFICO
+    
     let revenueChartInstance = null;
 
-    // ELEMENTOS DO DOM
     const loginScreen = document.getElementById('screen-login');
     const appScreen = document.getElementById('screen-app');
     const loginButton = document.getElementById('login-button');
@@ -19,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const agendamentoForm = document.getElementById('agendamento-form');
     const logoutButtons = document.querySelectorAll('.logout-button');
 
-    // FUNÇÕES DE DADOS
     async function loadAllData() {
         try {
             const response = await fetch('api.php?acao=getAllData');
@@ -105,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ROTEADOR DE PÁGINAS
     const showPage = (pageId) => {
         if (revenueChartInstance) {
             revenueChartInstance.destroy();
@@ -135,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pageId === 'page-relatorios') renderReports();
     };
 
-    // FUNÇÕES DE RENDERIZAÇÃO
     const formatCurrency = (value) => `R$ ${(parseFloat(value || 0)).toFixed(2).replace('.', ',')}`;
 
     const renderDashboard = () => {
@@ -161,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .sort((a, b) => a.hora_agendamento.localeCompare(b.hora_agendamento))[0];
             
             if (nextAppointment) {
-                // CORREÇÃO: Encontra o nome do cliente na lista de clientes
+                
                 const client = appState.clients.find(c => c.id === nextAppointment.cliente_id);
                 const clientName = client ? client.nome : 'Cliente';
 
@@ -192,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const list = document.createElement('ul');
             list.className = 'space-y-3';
             appointmentsForDay.forEach(app => {
-                // CORREÇÃO: Encontra o nome do cliente na lista de clientes
+                
                 const client = appState.clients.find(c => c.id === app.cliente_id);
                 const clientName = client ? client.nome : 'Cliente';
 
@@ -298,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // LISTENERS DE EVENTOS
     loginButton.addEventListener('click', async () => {
         loginScreen.classList.add('hidden');
         appScreen.classList.remove('hidden');
