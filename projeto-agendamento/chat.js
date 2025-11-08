@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <b>Pagamento:</b> ${selection.paymentMethod}
                 `;
                 addMessage('bot', confirmationMessage, true);
-                saveAppointment(); // <-- CHAMADA PRINCIPAL
+                saveAppointment(); 
                 addMessage('bot', "Seu horário foi salvo no nosso sistema. Obrigado!");
                 showRestartOption();
                 break;
@@ -290,6 +290,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Iniciar Chat ---
     handleConversation();
 });
