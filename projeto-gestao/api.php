@@ -1,11 +1,10 @@
 <?php
-// --- CONFIGURAÇÃO INICIAL ---
+
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
 header('Content-Type: application/json');
 session_start();
 
-// --- FUNÇÕES AUXILIARES ---
 function responder($sucesso, $dadosOuMensagem, $httpCode = 200) {
     http_response_code($httpCode);
     $resposta = ['sucesso' => $sucesso];
@@ -22,14 +21,13 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
     responder(false, "Erro interno no servidor: $errstr", 500);
 });
 
-// --- LÓGICA PRINCIPAL ---
+
 try {
     require_once 'conexao.php';
 
     $input = json_decode(file_get_contents('php://input'));
     $acao = $_POST['acao'] ?? $input->acao ?? $_GET['acao'] ?? '';
 
-    // --- ROTAS DE AUTENTICAÇÃO E AGENDAMENTO (PÚBLICAS) ---
     if ($acao == 'registrar') {
         $nome = $input->nome ?? '';
         $email = $input->email ?? '';
@@ -82,10 +80,7 @@ try {
             responder(false, 'Erro ao redefinir a senha.', 500);
         }
     }
-    // ALTERAÇÃO: A verificação de login foi removida para permitir acesso direto.
-    // A rota 'login' não é mais necessária, pois o frontend não a utiliza.
 
-    // --- ROTAS DO PAINEL (AGORA PÚBLICAS) ---
     elseif ($acao == 'getAllData') {
         $resultClientes = $conexao->query("SELECT * FROM clientes ORDER BY nome");
         $clientes = $resultClientes->fetch_all(MYSQLI_ASSOC);
@@ -174,7 +169,7 @@ try {
 
         responder(true, ['hoje' => $relatorioHoje, 'semana' => $relatorioSemana, 'mes' => $relatorioMes, 'grafico' => $grafico]);
     }
-     // Rota para agendamento externo (pelo chat)
+     
     elseif ($acao == 'getHorarios') {
         $data = $_GET['data'] ?? '';
         if (empty($data)) {
